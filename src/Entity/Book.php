@@ -30,7 +30,7 @@ class Book
     #[ORM\JoinColumn(nullable: false)]
     private ?Author $author_id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::JSON)]
     private array $genres = [];
 
     #[ORM\ManyToOne]
