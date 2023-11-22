@@ -28,14 +28,14 @@ class Book
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Author $authorId = null;
+    private ?Author $author = null;
 
     #[ORM\Column(type: Types::JSON)]
     private array $genres = [];
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Publisher $publisherId = null;
+    private ?Publisher $publisher = null;
 
     public function getId(): ?UuidInterface
     {
@@ -78,14 +78,14 @@ class Book
         return $this;
     }
 
-    public function getAuthorId(): ?Author
+    public function getAuthor(): ?Author
     {
-        return $this->authorId;
+        return $this->author;
     }
 
-    public function setAuthorId(?Author $authorId): static
+    public function setAuthor(?Author $author): static
     {
-        $this->authorId = $authorId;
+        $this->author = $author;
 
         return $this;
     }
@@ -102,14 +102,14 @@ class Book
         return $this;
     }
 
-    public function getPublisherId(): ?Publisher
+    public function getPublisher(): ?Publisher
     {
-        return $this->publisherId;
+        return $this->publisher;
     }
 
-    public function setPublisherId(?Publisher $publisherId): static
+    public function setPublisher(?Publisher $publisher): static
     {
-        $this->publisherId = $publisherId;
+        $this->publisher = $publisher;
 
         return $this;
     }
