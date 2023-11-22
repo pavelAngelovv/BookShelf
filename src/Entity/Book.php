@@ -24,18 +24,18 @@ class Book
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $release_date = null;
+    private ?\DateTimeInterface $releaseDate = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Author $author_id = null;
+    private ?Author $authorId = null;
 
     #[ORM\Column(type: Types::JSON)]
     private array $genres = [];
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Publisher $publisher_id = null;
+    private ?Publisher $publisherId = null;
 
     public function getId(): ?UuidInterface
     {
@@ -68,24 +68,24 @@ class Book
 
     public function getReleaseDate(): ?\DateTimeInterface
     {
-        return $this->release_date;
+        return $this->releaseDate;
     }
 
-    public function setReleaseDate(\DateTimeInterface $release_date): static
+    public function setReleaseDate(\DateTimeInterface $releaseDate): static
     {
-        $this->release_date = $release_date;
+        $this->releaseDate = $releaseDate;
 
         return $this;
     }
 
     public function getAuthorId(): ?Author
     {
-        return $this->author_id;
+        return $this->authorId;
     }
 
-    public function setAuthorId(?Author $author_id): static
+    public function setAuthorId(?Author $authorId): static
     {
-        $this->author_id = $author_id;
+        $this->authorId = $authorId;
 
         return $this;
     }
@@ -104,12 +104,12 @@ class Book
 
     public function getPublisherId(): ?Publisher
     {
-        return $this->publisher_id;
+        return $this->publisherId;
     }
 
-    public function setPublisherId(?Publisher $publisher_id): static
+    public function setPublisherId(?Publisher $publisherId): static
     {
-        $this->publisher_id = $publisher_id;
+        $this->publisherId = $publisherId;
 
         return $this;
     }
