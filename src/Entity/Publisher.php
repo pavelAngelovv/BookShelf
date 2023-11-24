@@ -19,7 +19,7 @@ class Publisher
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    public function getId(): ?int
+    public function getId(): ?UuidInterface
     {
         return $this->id;
     }
