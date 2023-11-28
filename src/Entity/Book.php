@@ -37,6 +37,8 @@ class Book
     #[ORM\JoinColumn(nullable: false)]
     private ?Publisher $publisher = null;
 
+    public static array $availableGenres = ['Mystery', 'Thriller', 'Fiction', 'Sci-fi', 'Adventure'];
+
     public function getId(): ?UuidInterface
     {
         return $this->id;
@@ -97,7 +99,7 @@ class Book
 
     public function setGenres(array $genres): static
     {
-        $this->genres = $genres;
+        $this->genres = array_intersect($genres, self::$availableGenres);
 
         return $this;
     }

@@ -46,12 +46,10 @@ final class BookFactory extends ModelFactory
      */
     protected function getDefaults(): array
     {
-        $genres = ['Mystery', 'Thriller', 'Comedy', 'Horror', 'History'];
-
         return [
             'author' => AuthorFactory::new(),
             'description' => self::faker()->text(),
-            'genres' => self::faker()->randomElements($genres, self::faker()->numberBetween(1, 3)),
+            'genres' => self::faker()->randomElements(Book::$availableGenres, self::faker()->numberBetween(1, 3)),
             'publisher' => PublisherFactory::new(),
             'releaseDate' => self::faker()->dateTime(),
             'title' => self::faker()->sentence(4, true),
