@@ -30,7 +30,7 @@
                                     <td>{{ book.title }}</td>
                                     <td>{{ book.description }}</td>
                                     <td>{{ book.releaseDate ? book.releaseDate|date('Y-m-d') : '' }}</td>
-                                    <td>{{ book.genres ? book.genres|json_encode : '' }}</td>
+                                    <td>{{ book.genres ? book.genres|join(', ') : '' }}</td>
                                 </tr>
                             {% else %}
                                 <tr>
