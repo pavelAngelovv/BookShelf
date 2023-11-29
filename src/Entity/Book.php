@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use App\Enum\AvailableGenres;
 use App\Repository\BookRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 class Book
@@ -18,26 +20,33 @@ class Book
     private ?UuidInterface $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 10, max: 1000)]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank]
+    #[Assert\Type('\DateTimeInterface')]
     private ?\DateTimeInterface $releaseDate = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull]
     private ?Author $author = null;
 
     #[ORM\Column(type: Types::JSON)]
+    #[Assert\Choice(callback: [AvailableGenres::class, 'values'])]
+    #[Assert\Count(min: 1)]
     private array $genres = [];
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull]
     private ?Publisher $publisher = null;
-
-    public static array $availableGenres = ['Mystery', 'Thriller', 'Fiction', 'Sci-fi', 'Adventure'];
 
     public function getId(): ?UuidInterface
     {
@@ -99,7 +108,7 @@ class Book
 
     public function setGenres(array $genres): static
     {
-        $this->genres = array_intersect($genres, self::$availableGenres);
+        $this->genres = $genres;
 
         return $this;
     }

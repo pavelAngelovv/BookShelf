@@ -16,15 +16,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class BookController extends AbstractController
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private BookRepository $bookRepository
     ) {
     }
 
     #[Route('/', name: 'app_book_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $query = $this->entityManager->getRepository(Book::class)->createQueryBuilder('b')
-        ->getQuery();
+        $query = $this->bookRepository->createFindAllQuery();
 
         $pagination = $paginator->paginate(
             $query,
