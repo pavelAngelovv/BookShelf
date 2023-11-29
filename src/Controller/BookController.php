@@ -17,16 +17,17 @@ class BookController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private BookRepository $bookRepository
+        private BookRepository $bookRepository,
+        private PaginatorInterface $paginator,
     ) {
     }
 
     #[Route('/', name: 'app_book_index', methods: ['GET'])]
-    public function index(Request $request, PaginatorInterface $paginator): Response
+    public function index(Request $request): Response
     {
         $query = $this->bookRepository->createFindAllQuery();
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
             5
