@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Book;
-use App\Enum\AvailableGenres;
+use App\Enum\Genre;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,13 +20,7 @@ class BookType extends AbstractType
             ->add('genres', ChoiceType::class, [
                 'multiple' => true,
                 'expanded' => true,
-                'choices' => array_flip([
-                    AvailableGenres::MYSTERY->value,
-                    AvailableGenres::FICTION->value,
-                    AvailableGenres::SCIFI->value,
-                    AvailableGenres::THRILLER->value,
-                    AvailableGenres::ADVENTURE->value,
-                ]),
+                'choices' => array_flip(Genre::values()),
             ])
             ->add('author', AuthorType::class)
             ->add('publisher', PublisherType::class)

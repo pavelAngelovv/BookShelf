@@ -3,7 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\Book;
-use App\Enum\AvailableGenres;
+use App\Enum\Genre;
 use App\Repository\BookRepository;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -50,13 +50,7 @@ final class BookFactory extends ModelFactory
         return [
             'author' => AuthorFactory::new(),
             'description' => self::faker()->text(),
-            'genres' => self::faker()->randomElements([
-                AvailableGenres::MYSTERY->value,
-                AvailableGenres::FICTION->value,
-                AvailableGenres::SCIFI->value,
-                AvailableGenres::THRILLER->value,
-                AvailableGenres::ADVENTURE->value,
-            ], self::faker()->numberBetween(1, 3)),
+            'genres' => self::faker()->randomElements(Genre::values(), self::faker()->numberBetween(1, 3)),
             'publisher' => PublisherFactory::new(),
             'releaseDate' => self::faker()->dateTime(),
             'title' => self::faker()->sentence(4, true),

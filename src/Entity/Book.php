@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Enum\AvailableGenres;
+use App\Enum\Genre;
 use App\Repository\BookRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,7 +39,7 @@ class Book
     private ?Author $author = null;
 
     #[ORM\Column(type: Types::JSON)]
-    #[Assert\Choice(callback: [AvailableGenres::class, 'values'])]
+    #[Assert\Choice(callback: [Genre::class, 'values'])]
     #[Assert\Count(min: 1)]
     private array $genres = [];
 

@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum AvailableGenres: string
+enum Genre: string
 {
     use BaseTrait;
 
