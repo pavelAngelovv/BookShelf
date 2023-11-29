@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @extends ServiceEntityRepository<Book>
@@ -17,29 +16,13 @@ use Knp\Component\Pager\PaginatorInterface;
  */
 class BookRepository extends ServiceEntityRepository
 {
-    public function __construct(
-        ManagerRegistry $registry,
-        private PaginatorInterface $paginator
-    ) {
+    public function __construct(ManagerRegistry $registry)
+    {
         parent::__construct($registry, Book::class);
     }
 
-    public function findAllPaginated($page = 1, $perPage = 5)
+    public function createFindAllQuery()
     {
-        $query = $this->createQueryBuilder('b')->getQuery();
-
-        $pagination = $this->paginator->paginate(
-            $query,
-            $page,
-            $perPage
-        );
-
-        $pagination->setCustomParameters([
-            'align' => 'center',
-            'size' => 'small',
-            'style' => 'bottom',
-        ]);
-
-        return $pagination;
+        return $this->createQueryBuilder('b')->getQuery();
     }
 }
