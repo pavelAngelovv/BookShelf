@@ -6,6 +6,7 @@ use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,11 +15,31 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/book')]
 class BookController extends AbstractController
 {
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private BookRepository $bookRepository,
+        private PaginatorInterface $paginator,
+    ) {
+    }
+
     #[Route('/', name: 'app_book_index', methods: ['GET'])]
-    public function index(BookRepository $bookRepository): Response
+    public function index(Request $request): Response
     {
+        $query = $this->bookRepository->createFindAllQuery();
+
+        $pagination = $this->paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            5
+        );
+        $pagination->setCustomParameters([
+            'align' => 'center',
+            'size' => 'small',
+            'style' => 'bottom',
+        ]);
+
         return $this->render('book/index.html.twig', [
-            'books' => $bookRepository->findAll(),
+            'pagination' => $pagination,
         ]);
     }
 

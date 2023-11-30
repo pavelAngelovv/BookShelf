@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Book;
+use App\Enum\Genre;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,7 +17,11 @@ class BookType extends AbstractType
             ->add('title')
             ->add('description')
             ->add('releaseDate')
-            ->add('genres')
+            ->add('genres', ChoiceType::class, [
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => array_flip(Genre::values()),
+            ])
             ->add('author', AuthorType::class)
             ->add('publisher', PublisherType::class)
         ;
