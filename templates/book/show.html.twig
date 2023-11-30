@@ -18,7 +18,30 @@
                     <th scope="row">Id</th>
                     <td>{{ book.id }}</td>
                   </tr>
-                  <!-- ... (rest of the table rows) ... -->
+                  <tr>
+                    <th scope="row">Title</th>
+                    <td>{{ book.title }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Description</th>
+                    <td>{{ book.description }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Author</th>
+                    <td>{{ book.author.firstName }} {{ book.author.lastName }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Release Date</th>
+                    <td>{{ book.releaseDate ? book.releaseDate|date('Y-m-d') : '' }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Genres</th>
+                    <td>{{ book.genres ? book.genres|join(', ') : '' }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Publisher</th>
+                    <td>{{ book.publisher.name}}</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -34,6 +57,5 @@
       </div>
     </div>
   </div>
-</div>
 </section>
 {% endblock %}
