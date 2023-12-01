@@ -45,3 +45,27 @@ tbody td {
 .table td {
   padding: 14px;
 }
+
+.bg-dark label {
+  color: white; 
+  margin-right: 10px;
+  font-weight: 300;
+}
+
+.form-group legend {
+  color: white;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.form-group legend.release-date {
+  font-weight: 300;
+}
+
+.form-group legend.genres {
+  font-weight: 300;
+}
+
+.form-group legend.centered {
+  text-align: center;
+}

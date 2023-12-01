@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 class Book
@@ -33,17 +34,19 @@ class Book
     #[Assert\Type('\DateTimeInterface')]
     private ?\DateTimeInterface $releaseDate = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ["persist"])]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull]
     private ?Author $author = null;
 
     #[ORM\Column(type: Types::JSON)]
-    #[Assert\Choice(callback: [Genre::class, 'values'])]
+    #[Assert\All([
+       new Assert\Choice(callback: [Genre::class, 'values'])
+    ])]
     #[Assert\Count(min: 1)]
     private array $genres = [];
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ["persist"])]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull]
     private ?Publisher $publisher = null;
