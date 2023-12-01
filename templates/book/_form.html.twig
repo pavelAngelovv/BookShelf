@@ -1,14 +1,14 @@
 <div class="container-md p-4 bg-dark mx-auto" style="border-radius: 30px; width: 50%; min-width: 300px; max-width: 75%;">
-    {{ form_start(form, {'attr': {'class': 'form-group bg-dark'}}) }}
-        {{ form_row(form.title) }}
-        {{ form_row(form.description) }}
-        {{ form_row(form.releaseDate, {'label_attr': {'class': 'release-date'}}) }}
-        {{ form_row(form.genres, {'label_attr': {'class': 'genres'}}) }}
-        {{ form_row(form.author, {'label_attr': {'class': 'centered'}}) }}
-        {{ form_row(form.publisher, {'label_attr': {'class': 'centered'}}) }}
-        <div class="d-flex justify-content-between">
-            <a class="btn btn-secondary" href="{{ path('app_book_index') }}">← Back to List</a>
-            <button class="btn btn-primary w-25">{{ button_label|default('Save') }}</button>
-        </div>
-    {{ form_end(form) }}
+  {{ form_start(form, {'attr': {'class': 'form-group bg-dark'}}) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.releaseDate, {'label_attr': {'class': 'release-date'}}) }}
+    {{ form_row(form.genres, {'label_attr': {'class': 'genres'}}) }}
+    {{ form_row(form.author, {'label_attr': {'class': 'centered'}}) }}
+    {{ form_row(form.publisher, {'label_attr': {'class': 'centered'}}) }}
+    <div class="d-flex justify-content-between">
+      <a class="btn btn-secondary" href="{{ path('app_book_index') }}">← Back to List</a>
+      <button class="btn btn-primary w-25">{{ button_label|default('Save') }}</button>
+    </div>
+  {{ form_end(form) }}
 </div>
