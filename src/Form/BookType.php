@@ -25,6 +25,9 @@ class BookType extends AbstractType
             ])
             ->add('releaseDate', DateType::class, [
                 'label' => 'Release Date',
+                'widget' => 'single_text', 
+                'html5' => false,
+                'attr' => ['class' => 'js-datepicker'],
             ])
             ->add('genres', ChoiceType::class, [
                 'multiple' => true,

@@ -69,3 +69,18 @@ tbody td {
 .form-group legend.centered {
   text-align: center;
 }
+
+.datepicker{
+  background-color: #212529;
+}
+
+#datepicker {
+  width: 75%;
+}
+
+@media (min-width: 768px) {
+  #datepicker {
+      width: 50%;
+  }
+}
+

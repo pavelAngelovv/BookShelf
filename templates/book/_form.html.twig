@@ -2,7 +2,17 @@
   {{ form_start(form, {'attr': {'class': 'form-group bg-dark'}}) }}
     {{ form_row(form.title) }}
     {{ form_row(form.description) }}
-    {{ form_row(form.releaseDate, {'label_attr': {'class': 'release-date'}}) }}
+    <div >
+      {{ form_label(form.releaseDate, 'Release date', {'label_attr': {'class': 'form-label'}}) }}
+    </div>
+    <div class="input-group date mb-3" id="datepicker">
+      {{ form_widget(form.releaseDate, {'attr': {'class': 'form-control js-datepicker'}}) }}
+      <span class="input-group-append">
+        <span class="input-group-text bg-white">
+          <i class="fa fa-calendar"></i>
+        </span>
+      </span>
+    </div>
     {{ form_row(form.genres, {'label_attr': {'class': 'genres'}}) }}
     {{ form_row(form.author, {'label_attr': {'class': 'centered'}}) }}
     {{ form_row(form.publisher, {'label_attr': {'class': 'centered'}}) }}
