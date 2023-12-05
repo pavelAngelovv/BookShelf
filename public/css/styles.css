@@ -74,13 +74,9 @@ tbody td {
   background-color: #212529;
 }
 
-#datepicker {
-  width: 75%;
+.form-container {
+  border-radius: 30px;
+  width: 50%;
+  min-width: 300px;
+  max-width: 75%;
 }
-
-@media (min-width: 768px) {
-  #datepicker {
-      width: 50%;
-  }
-}
-
