@@ -3,11 +3,21 @@
 {% block title %}Edit Book{% endblock %}
 
 {% block body %}
-    <h1>Edit Book</h1>
+  <h1>Edit Book</h1>  
 
-    {{ include('book/_form.html.twig', {'button_label': 'Update'}) }}
+  {{ include('book/_form.html.twig', {'button_label': 'Update'}) }}
+{% endblock %}
 
-    <a href="{{ path('app_book_index') }}">back to list</a>
-
-    {{ include('book/_delete_form.html.twig') }}
+{% block javascripts %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+  <script>
+    $(document).ready(function() {
+        $('.js-datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+    });
+    $('.input-group-text.bg-white').on('click', function() {
+        $(this).closest('.input-group').find('.js-datepicker').focus();
+    });
+  </script>
 {% endblock %}

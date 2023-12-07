@@ -9,41 +9,37 @@
 {% block body %}
   
 <section>
-  <div class="gradient-custom-2">
-    <div class="pb-5">
-      <div class="container">
-        <div class="table-responsive">
-          <h1 class="mt-5">Books</h1>
-          <a href="{{ path('app_book_new') }}" class="btn btn-success mb-3">+ Add a book</a>
-          <table class="table table-dark table-bordered table-hover mb-0">
-            <thead>
-              <tr>
-                <th class="p-2" scope="col">Title</th>
-                <th scope="col">Description</th>
-                <th scope="col">Release Date</th>
-                <th scope="col">Genres</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for book in pagination %}
-                <tr class="book-row" data-href="{{ path('app_book_show', {'id': book.id}) }}">
-                  <td>{{ book.title }}</td>
-                  <td>{{ book.description }}</td>
-                  <td>{{ book.releaseDate ? book.releaseDate|date('Y-m-d') : '' }}</td>
-                  <td>{{ book.genres ? book.genres|join(', ') : '' }}</td>
-                </tr>
-              {% else %}
-                <tr>
-                  <td colspan="4">No records found</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-        <div class="navigation p-4">
-          {{ knp_pagination_render(pagination) }}
-        </div>
-      </div>
+  <div class="container">
+    <div class="table-responsive">
+      <h1 class="mt-5">Books</h1>
+      <a href="{{ path('app_book_new') }}" class="btn btn-success mb-3">+ Add a book</a>
+      <table class="table table-dark table-bordered table-hover mb-0">
+        <thead>
+          <tr>
+            <th class="p-2" scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Release Date</th>
+            <th scope="col">Genres</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for book in pagination %}
+            <tr class="book-row" data-href="{{ path('app_book_show', {'id': book.id}) }}">
+              <td>{{ book.title }}</td>
+              <td>{{ book.description }}</td>
+              <td>{{ book.releaseDate ? book.releaseDate|date('Y-m-d') : '' }}</td>
+              <td>{{ book.genres ? book.genres|join(', ') : '' }}</td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="4">No records found</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="navigation p-4">
+      {{ knp_pagination_render(pagination) }}
     </div>
   </div>
 </section>

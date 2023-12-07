@@ -1,4 +1,24 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<div class="container-md p-4 bg-dark mx-auto form-container">
+  {{ form_start(form, {'attr': {'class': 'form-group bg-dark'}}) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.description) }}
+    <div>
+      {{ form_label(form.releaseDate, 'Release date', {'label_attr': {'class': 'form-label'}}) }}
+    </div>
+    <div class="input-group date mb-3">
+      {{ form_widget(form.releaseDate, {'attr': {'class': 'form-control js-datepicker'}}) }}
+      <span class="input-group-append">
+        <span class="input-group-text bg-white">
+          <i class="fa fa-calendar"></i>
+        </span>
+      </span>
+    </div>
+    {{ form_row(form.genres, {'label_attr': {'class': 'genres'}}) }}
+    {{ form_row(form.author, {'label_attr': {'class': 'centered'}}) }}
+    {{ form_row(form.publisher, {'label_attr': {'class': 'centered'}}) }}
+    <div class="d-flex justify-content-between">
+      <a class="btn btn-secondary" href="{{ path('app_book_index') }}">← Back to List</a>
+      <button class="btn btn-primary w-25">{{ button_label|default('Save') }}</button>
+    </div>
+  {{ form_end(form) }}
+</div>
