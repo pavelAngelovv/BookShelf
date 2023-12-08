@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Author;
 use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
@@ -16,8 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class BookController extends AbstractController
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
         private BookRepository $bookRepository,
+        private EntityManagerInterface $entityManager,
         private PaginatorInterface $paginator,
     ) {
     }
@@ -49,19 +50,43 @@ class BookController extends AbstractController
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            // Check if the author already exists
+            $authorFirstName = $form->get('author')->get('firstName')->getData();
+            $authorLastName = $form->get('author')->get('lastName')->getData();
+    
+            $existingAuthor = $this->entityManager
+                ->getRepository(Author::class)
+                ->findOneBy(['firstName' => $authorFirstName, 'lastName' => $authorLastName]);
+    
+            if ($existingAuthor) {
+                // Use existing author
+                $book->setAuthor($existingAuthor);
+            } else {
+                // Create a new author
+                $author = new Author();
+                $author->setFirstName($authorFirstName);
+                $author->setLastName($authorLastName);
+    
+                $entityManager->persist($author);
+    
+                // Set the new author for the book
+                $book->setAuthor($author);
+            }
+    
             $entityManager->persist($book);
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
         }
-
+    
         return $this->render('book/new.html.twig', [
             'book' => $book,
             'form' => $form,
         ]);
     }
+    
 
     #[Route('/{id}', name: 'app_book_show', methods: ['GET'])]
     public function show(Book $book): Response

@@ -1,4 +1,9 @@
-{{ form_start(form) }}
+<div class="container-md p-4 bg-dark mx-auto form-container">
+{{ form_start(form, {'attr': {'class': 'form-group bg-dark'}}) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <div class="d-flex justify-content-between">
+        <a class="btn btn-secondary" href="{{ path('app_publisher_index') }}">← Back to List</a>
+        <button class="btn btn-primary w-25">{{ button_label|default('Save') }}</button>
+      </div>
 {{ form_end(form) }}
+</div>
