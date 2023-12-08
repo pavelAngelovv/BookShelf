@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Author;
 use App\Entity\Book;
+use App\Entity\Publisher;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -52,7 +53,6 @@ class BookController extends AbstractController
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
-            // Check if the author already exists
             $authorFirstName = $form->get('author')->get('firstName')->getData();
             $authorLastName = $form->get('author')->get('lastName')->getData();
     
@@ -61,18 +61,32 @@ class BookController extends AbstractController
                 ->findOneBy(['firstName' => $authorFirstName, 'lastName' => $authorLastName]);
     
             if ($existingAuthor) {
-                // Use existing author
                 $book->setAuthor($existingAuthor);
             } else {
-                // Create a new author
                 $author = new Author();
                 $author->setFirstName($authorFirstName);
                 $author->setLastName($authorLastName);
     
                 $entityManager->persist($author);
     
-                // Set the new author for the book
                 $book->setAuthor($author);
+            }
+
+            $publisherName = $form->get('publisher')->get('name')->getData();
+    
+            $existingPublisher = $this->entityManager
+                ->getRepository(Publisher::class)
+                ->findOneBy(['name' => $publisherName]);
+    
+            if ($existingPublisher) {
+                $book->setPublisher($existingPublisher);
+            } else {
+                $publisher = new Publisher();
+                $publisher->setName($publisherName);
+    
+                $entityManager->persist($publisher);
+    
+                $book->setPublisher($publisher);
             }
     
             $entityManager->persist($book);
