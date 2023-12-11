@@ -91,16 +91,15 @@ class BookController extends AbstractController
     
             $entityManager->persist($book);
             $entityManager->flush();
-    
+
             return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
         }
-    
+
         return $this->render('book/new.html.twig', [
             'book' => $book,
             'form' => $form,
         ]);
     }
-    
 
     #[Route('/{id}', name: 'app_book_show', methods: ['GET'])]
     public function show(Book $book): Response
