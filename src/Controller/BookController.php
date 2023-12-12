@@ -66,8 +66,6 @@ class BookController extends AbstractController
                 $author->setLastName($authorLastName);
     
                 $entityManager->persist($author);
-    
-                $book->setAuthor($author);
             }
             
             $book->setAuthor($author);
@@ -83,8 +81,6 @@ class BookController extends AbstractController
                 $publisher->setName($publisherName);
     
                 $entityManager->persist($publisher);
-    
-                $book->setPublisher($publisher);
             }
 
             $book->setPublisher($publisher);
