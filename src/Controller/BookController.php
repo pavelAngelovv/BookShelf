@@ -56,13 +56,11 @@ class BookController extends AbstractController
             $authorFirstName = $form->get('author')->get('firstName')->getData();
             $authorLastName = $form->get('author')->get('lastName')->getData();
     
-            $existingAuthor = $this->entityManager
+            $author = $this->entityManager
                 ->getRepository(Author::class)
                 ->findOneBy(['firstName' => $authorFirstName, 'lastName' => $authorLastName]);
     
-            if ($existingAuthor) {
-                $book->setAuthor($existingAuthor);
-            } else {
+            if (!$author) {
                 $author = new Author();
                 $author->setFirstName($authorFirstName);
                 $author->setLastName($authorLastName);
@@ -71,16 +69,16 @@ class BookController extends AbstractController
     
                 $book->setAuthor($author);
             }
+            
+            $book->setAuthor($author);
 
             $publisherName = $form->get('publisher')->get('name')->getData();
     
-            $existingPublisher = $this->entityManager
+            $publisher = $this->entityManager
                 ->getRepository(Publisher::class)
                 ->findOneBy(['name' => $publisherName]);
     
-            if ($existingPublisher) {
-                $book->setPublisher($existingPublisher);
-            } else {
+            if (!$publisher) {
                 $publisher = new Publisher();
                 $publisher->setName($publisherName);
     
@@ -88,7 +86,9 @@ class BookController extends AbstractController
     
                 $book->setPublisher($publisher);
             }
-    
+
+            $book->setPublisher($publisher);
+
             $entityManager->persist($book);
             $entityManager->flush();
 
