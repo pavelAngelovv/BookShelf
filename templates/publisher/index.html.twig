@@ -3,33 +3,42 @@
 {% block title %}Publisher index{% endblock %}
 
 {% block body %}
-    <h1>Publisher index</h1>
-
-    <table class="table">
+<section>
+  <div class="container">
+    <div class="table-responsive">
+      <h1>Publishers</h1>
+      <a href="{{ path('app_publisher_new') }}" class="btn btn-success mb-3">+ Add a publisher</a>
+      <table class="table table-dark table-bordered table-hover mb-0">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>actions</th>
-            </tr>
+          <tr>
+            <th scope="col">Name</th>
+            <th class="p-2" scope="col">Published Books</th>
+          </tr>
         </thead>
         <tbody>
-        {% for publisher in publishers %}
+          {% for publisher in pagination %}
+          <tr class="item-row" data-href="{{ path('app_publisher_show', {'id': publisher.id}) }}">
+            <td>{{ publisher.name }}</td>
+            <td>
+              {% for book in publisher.books %}
+                {{ book.title }}
+                {% if not loop.last %}, {% endif %}
+              {% endfor %}
+            </td>
+          </tr>
+          {% else %}
             <tr>
-                <td>{{ publisher.id }}</td>
-                <td>{{ publisher.name }}</td>
-                <td>
-                    <a href="{{ path('app_publisher_show', {'id': publisher.id}) }}">show</a>
-                    <a href="{{ path('app_publisher_edit', {'id': publisher.id}) }}">edit</a>
-                </td>
+              <td colspan="4">no records found</td>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
+          {% endfor %}
         </tbody>
-    </table>
+      </table>
+    </div>
+    <div class="navigation p-4">
+      {{ knp_pagination_render(pagination) }}
+    </div>
+  </div>
+</section>
 
-    <a href="{{ path('app_publisher_new') }}">Create new</a>
+<script src="{{ asset('js/book-template.js') }}"></script>
 {% endblock %}

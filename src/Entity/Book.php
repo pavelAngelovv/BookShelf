@@ -34,7 +34,7 @@ class Book
     #[Assert\Type('\DateTimeInterface')]
     private ?\DateTimeInterface $releaseDate = null;
 
-    #[ORM\ManyToOne(cascade: ["persist"])]
+    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'books')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull]
     private ?Author $author = null;
@@ -46,7 +46,7 @@ class Book
     #[Assert\Count(min: 1)]
     private array $genres = [];
 
-    #[ORM\ManyToOne(cascade: ["persist"])]
+    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'books')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull]
     private ?Publisher $publisher = null;

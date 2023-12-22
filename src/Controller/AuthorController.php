@@ -6,6 +6,7 @@ use App\Entity\Author;
 use App\Form\AuthorType;
 use App\Repository\AuthorRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,11 +15,31 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/author')]
 class AuthorController extends AbstractController
 {
+    public function __construct(
+        private AuthorRepository $authorRepository,
+        private EntityManagerInterface $entityManager,
+        private PaginatorInterface $paginator,
+    ) {
+    }
+
     #[Route('/', name: 'app_author_index', methods: ['GET'])]
-    public function index(AuthorRepository $authorRepository): Response
+    public function index(Request $request): Response
     {
+        $query = $this->authorRepository->createFindAllQuery();
+    
+        $pagination = $this->paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            5
+        );
+        $pagination->setCustomParameters([
+            'align' => 'center',
+            'size' => 'small',
+            'style' => 'bottom',
+        ]);
+    
         return $this->render('author/index.html.twig', [
-            'authors' => $authorRepository->findAll(),
+            'pagination' => $pagination,
         ]);
     }
 

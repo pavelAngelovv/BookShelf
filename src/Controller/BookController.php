@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Author;
 use App\Entity\Book;
+use App\Entity\Publisher;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,8 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class BookController extends AbstractController
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
         private BookRepository $bookRepository,
+        private EntityManagerInterface $entityManager,
         private PaginatorInterface $paginator,
     ) {
     }
@@ -49,8 +51,40 @@ class BookController extends AbstractController
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            $authorFirstName = $form->get('author')->get('firstName')->getData();
+            $authorLastName = $form->get('author')->get('lastName')->getData();
+    
+            $author = $this->entityManager
+                ->getRepository(Author::class)
+                ->findOneBy(['firstName' => $authorFirstName, 'lastName' => $authorLastName]);
+    
+            if (!$author) {
+                $author = new Author();
+                $author->setFirstName($authorFirstName);
+                $author->setLastName($authorLastName);
+    
+                $entityManager->persist($author);
+            }
+            
+            $book->setAuthor($author);
+
+            $publisherName = $form->get('publisher')->get('name')->getData();
+    
+            $publisher = $this->entityManager
+                ->getRepository(Publisher::class)
+                ->findOneBy(['name' => $publisherName]);
+    
+            if (!$publisher) {
+                $publisher = new Publisher();
+                $publisher->setName($publisherName);
+    
+                $entityManager->persist($publisher);
+            }
+
+            $book->setPublisher($publisher);
+
             $entityManager->persist($book);
             $entityManager->flush();
 

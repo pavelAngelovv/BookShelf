@@ -2,10 +2,6 @@
 
 {% block title %}Book Index{% endblock %}
 
-{% block stylesheets %}
-  {{ parent() }}
-{% endblock %}
-
 {% block body %}
   
 <section>
@@ -24,7 +20,7 @@
         </thead>
         <tbody>
           {% for book in pagination %}
-            <tr class="book-row" data-href="{{ path('app_book_show', {'id': book.id}) }}">
+            <tr class="item-row" data-href="{{ path('app_book_show', {'id': book.id}) }}">
               <td>{{ book.title }}</td>
               <td>{{ book.description }}</td>
               <td>{{ book.releaseDate ? book.releaseDate|date('Y-m-d') : '' }}</td>
@@ -44,5 +40,5 @@
   </div>
 </section>
 
-<script src="{{ asset('js/script.js') }}"></script>
+<script src="{{ asset('js/book-template.js') }}"></script>
 {% endblock %}
