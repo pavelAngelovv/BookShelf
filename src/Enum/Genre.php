@@ -11,4 +11,6 @@ enum Genre: string
     case SCIFI = 'Sci-fi';
     case THRILLER = 'Thriller';
     case ADVENTURE = 'Adventure';
+    case NOVEL = 'Novel';
+    case BIOGRAPHY = 'Biography';
 }
