@@ -14,7 +14,25 @@
       </span>
     </div>
     {{ form_row(form.genres, {'label_attr': {'class': 'genres'}}) }}
-    {{ form_row(form.author, {'label_attr': {'class': 'centered'}}) }}
+    <div class="d-flex justify-content-center align-items-center" style="margin-top: 30px;">
+      <button type="button" style="white-space: nowrap; border-radius: 100%; width: 38px" class="btn mb-4 mr-2 form-icons" id="remove-author">
+        <img class="bx nav_image" src="{{ asset('/images/minus-button.png') }}"/>
+      </button>
+      <div class="mx-2">
+        {{ form_label(form.authors, 'Authors', {'label_attr': {'class': 'authors-label'}}) }}
+      </div>
+      <button type="button" style="white-space: nowrap;" class="btn mb-4 ml-2 form-icons" id="add-author">
+        <img class="bx nav_image" src="{{ asset('/images/plus.png') }}"/>
+      </button>
+    </div>
+    <div id="authors-collection" data-prototype="{{ form_widget(form.authors.vars.prototype)|e('html_attr') }}">
+      {% for authorField in form.authors %}
+      <div class="author-form" style="color: white;">
+        {{ form_errors(authorField) }}
+        {{ form_widget(authorField) }}
+      </div>
+      {% endfor %}
+    </div>
     {{ form_row(form.publisher, {'label_attr': {'class': 'centered'}}) }}
     <div class="d-flex justify-content-between">
       <a class="btn btn-secondary" href="{{ path('app_book_index') }}">← Back to List</a>

@@ -53,26 +53,34 @@ class BookController extends AbstractController
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
-            $authorFirstName = $form->get('author')->get('firstName')->getData();
-            $authorLastName = $form->get('author')->get('lastName')->getData();
-    
-            $author = $this->entityManager
-                ->getRepository(Author::class)
-                ->findOneBy(['firstName' => $authorFirstName, 'lastName' => $authorLastName]);
-    
-            if (!$author) {
-                $author = new Author();
-                $author->setFirstName($authorFirstName);
-                $author->setLastName($authorLastName);
-    
-                $entityManager->persist($author);
-            }
-            
-            $book->setAuthor($author);
 
+            $authorsData = $form->get('authors')->getData();
+    
+            // Iterate through authors
+            foreach ($authorsData as $authorData) {
+                $authorFirstName = $authorData->getFirstName();
+                $authorLastName = $authorData->getLastName();
+    
+                // Check if the author exists
+                $author = $entityManager
+                    ->getRepository(Author::class)
+                    ->findOneBy(['firstName' => $authorFirstName, 'lastName' => $authorLastName]);
+    
+                if (!$author) {
+                    // If no author, create new one
+                    $author = new Author();
+                    $author->setFirstName($authorFirstName);
+                    $author->setLastName($authorLastName);
+                }
+
+                // Associate book with author
+                $entityManager->persist($author);
+                $book->addAuthor($author);
+            }
+    
             $publisherName = $form->get('publisher')->get('name')->getData();
     
-            $publisher = $this->entityManager
+            $publisher = $entityManager
                 ->getRepository(Publisher::class)
                 ->findOneBy(['name' => $publisherName]);
     

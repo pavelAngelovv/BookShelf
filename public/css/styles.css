@@ -262,3 +262,34 @@ tbody td {
 label.form-check-label.genres {
   margin-top: 1px;
 }
+
+.author-form {
+  margin-bottom: 50px;
+}
+
+.authors-label {
+  text-align: center;
+  padding-right: 20px;
+  margin-left: 18px;
+  margin-bottom: 20px;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.form-icons {
+  opacity: 80%;
+}
+
+.form-icons:hover {
+  opacity: 100%;
+  transition: 250ms;
+}
+
+.form-icons:disabled {
+  opacity: 30%;
+}

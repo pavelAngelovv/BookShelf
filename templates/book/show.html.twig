@@ -26,7 +26,9 @@
               </tr>
               <tr>
                 <th scope="row">Author</th>
-                <td>{{ book.author.firstName }} {{ book.author.lastName }}</td>
+                <td>
+                  {{ book.authors|map(author => (author.firstName ~ ' ' ~ author.lastName))|join(', ') }}
+                </td>
               </tr>
               <tr>
                 <th scope="row">Release Date</th>

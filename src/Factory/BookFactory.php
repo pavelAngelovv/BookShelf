@@ -48,7 +48,7 @@ final class BookFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'author' => AuthorFactory::new(),
+            'authors' => AuthorFactory::new()->createMany(self::faker()->numberBetween(1, 3)),
             'description' => self::faker()->text(),
             'genres' => self::faker()->randomElements(Genre::values(), self::faker()->numberBetween(1, 3)),
             'publisher' => PublisherFactory::new(),
