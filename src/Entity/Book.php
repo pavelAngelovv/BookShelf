@@ -36,7 +36,7 @@ class Book
     #[Assert\Type('\DateTimeInterface')]
     private ?\DateTimeInterface $releaseDate = null;
 
-    #[ORM\ManyToMany(targetEntity: Author::class, inversedBy: 'books', cascade: ["persist"])]
+    #[ORM\ManyToMany(targetEntity: Author::class, inversedBy: 'books', cascade: ["persist", "remove"])]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull]
     private ?Collection $authors;

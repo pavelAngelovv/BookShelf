@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\Book;
 use App\Enum\Genre;
-use Doctrine\DBAL\Types\ArrayType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;

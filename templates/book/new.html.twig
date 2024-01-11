@@ -11,7 +11,7 @@
 {% block javascripts %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
   <script>
-    $(document).ready(function() {
+    $(document).ready(() => {
       $('.js-datepicker').datepicker({
         format: 'yyyy-mm-dd'
       });
@@ -21,48 +21,48 @@
       $(this).closest('.input-group').find('.js-datepicker').focus();
     });
     
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', () => {
       // Function to add one author field
-      function addAuthorField(container, index) {
+      const addAuthorField = (container, index) => {
         // Get the prototype of a new author field
-        var newAuthor = container.getAttribute('data-prototype');
-        
+        let newAuthor = container.getAttribute('data-prototype');
+  
         // Replace "__name__" with a unique index
         newAuthor = newAuthor.replace(/__name__/g, index);
-    
+  
         // add label for the added author field
-        var newAuthorLabel = document.createElement('label');
+        const newAuthorLabel = document.createElement('label');
         newAuthorLabel.innerHTML = 'Author #' + (index + 1);
         newAuthorLabel.style = 'margin-bottom: 7px;';
-    
+  
         // Append the new label to the authors collection container
         container.appendChild(newAuthorLabel);
-    
+  
         // Create a div element to hold the new author field
-        var div = document.createElement('div');
+        const div = document.createElement('div');
         div.className = 'author-form';
         div.innerHTML = newAuthor;
-    
+  
         // Append the new author field to the authors collection container
         container.appendChild(div);
-      }
-    
+      };
+  
       // Get the authors collection container
-      var authorsContainer = document.getElementById('authors-collection');
-    
+      const authorsContainer = document.getElementById('authors-collection');
+  
       // Call the function to add one initial author field on page load
       addAuthorField(authorsContainer, 0);
-    
+  
       // Add event listener to the "Add Author" button
-      var addAuthorButton = document.getElementById('add-author');
+      const addAuthorButton = document.getElementById('add-author');
       if (addAuthorButton) {
-        addAuthorButton.addEventListener('click', function() {
+        addAuthorButton.addEventListener('click', () => {
           // Get the current number of author fields
-          var index = authorsContainer.getElementsByClassName('author-form').length;
-    
+          const index = authorsContainer.getElementsByClassName('author-form').length;
+  
           // Call the function to add one author field
           addAuthorField(authorsContainer, index);
-    
+  
           // Disable the "Add Author" button if there are 5 fields
           if (index + 1 === 5) {
             addAuthorButton.disabled = true;
@@ -73,16 +73,16 @@
           }
         });
       }
-    
+  
       // Add event listener to the "Remove Author" button
-      var removeAuthorButton = document.getElementById('remove-author');
+      const removeAuthorButton = document.getElementById('remove-author');
       removeAuthorButton.disabled = true;
-    
+  
       if (removeAuthorButton) {
-        removeAuthorButton.addEventListener('click', function() {
+        removeAuthorButton.addEventListener('click', () => {
           // Get the last author field in the container
-          var lastAuthorField = authorsContainer.lastElementChild;
-    
+          const lastAuthorField = authorsContainer.lastElementChild;
+  
           // Check if there is at least one author field to remove
           if (lastAuthorField && lastAuthorField.classList.contains('author-form')) {
             // Remove the last author field and its label
@@ -93,11 +93,13 @@
           if (authorsContainer.childElementCount === 2) {
             removeAuthorButton.disabled = true;
           }
-    
+  
           // Enable the "Add Author" button when a field is removed
           addAuthorButton.disabled = false;
         });
       }
     });
   </script>
+  
+
 {% endblock %}

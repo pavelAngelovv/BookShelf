@@ -114,20 +114,68 @@ class BookController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_book_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Book $book, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Book $book): Response
     {
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
+            $book->getAuthors()->clear();
+            // Iterate through authors
+            foreach ($form->get('authors')->getData() as $authorData) {
+                $authorFirstName = $authorData->getFirstName();
+                $authorLastName = $authorData->getLastName();
+    
+                // Check if the author exists
+                $author = $this->entityManager
+                    ->getRepository(Author::class)
+                    ->findOneBy(['firstName' => $authorFirstName, 'lastName' => $authorLastName]);
+    
+                if (!$author) {
+                    // If no author, create a new one
+                    $author = new Author();
+                    $author->setFirstName($authorFirstName);
+                    $author->setLastName($authorLastName);
+                }
+                
+                // Associate book with author
+                $this->entityManager->persist($author);
+                $book->addAuthor($author);
+            }
+    
+            $publisherName = $form->get('publisher')->get('name')->getData();
+    
+            $publisher = $this->entityManager
+                ->getRepository(Publisher::class)
+                ->findOneBy(['name' => $publisherName]);
+    
+            if (!$publisher) {
+                $publisher = new Publisher();
+                $publisher->setName($publisherName);
+    
+                $this->entityManager->persist($publisher);
+            }
+    
+            $book->setPublisher($publisher);
+    
+            $this->entityManager->persist($book);
+            $this->entityManager->flush();
+    
             return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
+        }
+        $authors = $book->getAuthors();
+        $authorNames = [];
+        foreach ($authors as $author) {
+            $authorNames[] = [
+                'firstName' => $author->getFirstName(),
+                'lastName' => $author->getLastName(),
+            ];
         }
 
         return $this->render('book/edit.html.twig', [
             'book' => $book,
-            'form' => $form,
+            'form' => $form->createView(),
+            'authors' => $authorNames,
         ]);
     }
 
