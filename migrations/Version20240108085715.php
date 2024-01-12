@@ -27,7 +27,6 @@ final class Version20240108085715 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE book_author DROP CONSTRAINT fk_9478d34516a2b381');
         $this->addSql('ALTER TABLE book_author ADD CONSTRAINT fk_9478d34516a2b381 FOREIGN KEY (book_id) REFERENCES book (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
     }

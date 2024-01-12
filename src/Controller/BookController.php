@@ -46,7 +46,7 @@ class BookController extends AbstractController
     }
 
     #[Route('/new', name: 'app_book_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request): Response
     {
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
@@ -62,7 +62,7 @@ class BookController extends AbstractController
                 $authorLastName = $authorData->getLastName();
     
                 // Check if the author exists
-                $author = $entityManager
+                $author = $this->entityManager
                     ->getRepository(Author::class)
                     ->findOneBy(['firstName' => $authorFirstName, 'lastName' => $authorLastName]);
     
@@ -74,13 +74,13 @@ class BookController extends AbstractController
                 }
 
                 // Associate book with author
-                $entityManager->persist($author);
+                $this->entityManager->persist($author);
                 $book->addAuthor($author);
             }
     
             $publisherName = $form->get('publisher')->get('name')->getData();
     
-            $publisher = $entityManager
+            $publisher = $this->entityManager
                 ->getRepository(Publisher::class)
                 ->findOneBy(['name' => $publisherName]);
     
@@ -88,13 +88,13 @@ class BookController extends AbstractController
                 $publisher = new Publisher();
                 $publisher->setName($publisherName);
     
-                $entityManager->persist($publisher);
+                $this->entityManager->persist($publisher);
             }
 
             $book->setPublisher($publisher);
 
-            $entityManager->persist($book);
-            $entityManager->flush();
+            $this->entityManager->persist($book);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -180,11 +180,11 @@ class BookController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_book_delete', methods: ['POST'])]
-    public function delete(Request $request, Book $book, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Book $book): Response
     {
         if ($this->isCsrfTokenValid('delete'.$book->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($book);
-            $entityManager->flush();
+            $this->entityManager->remove($book);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
