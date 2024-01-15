@@ -6,7 +6,9 @@ use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Publisher;
 use App\Form\BookType;
+use App\Repository\AuthorRepository;
 use App\Repository\BookRepository;
+use App\Repository\PublisherRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,9 +20,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class BookController extends AbstractController
 {
     public function __construct(
+        private AuthorRepository $authorRepository,
         private BookRepository $bookRepository,
         private EntityManagerInterface $entityManager,
         private PaginatorInterface $paginator,
+        private PublisherRepository $publisherRepository,
     ) {
     }
 
@@ -62,26 +66,25 @@ class BookController extends AbstractController
                 $authorLastName = $authorData->getLastName();
     
                 // Check if the author exists
-                $author = $this->entityManager
-                    ->getRepository(Author::class)
+                $author = $this->authorRepository
                     ->findOneBy(['firstName' => $authorFirstName, 'lastName' => $authorLastName]);
+
     
                 if (!$author) {
                     // If no author, create new one
                     $author = new Author();
                     $author->setFirstName($authorFirstName);
                     $author->setLastName($authorLastName);
+                    $this->entityManager->persist($author);
                 }
 
                 // Associate book with author
-                $this->entityManager->persist($author);
                 $book->addAuthor($author);
             }
     
             $publisherName = $form->get('publisher')->get('name')->getData();
     
-            $publisher = $this->entityManager
-                ->getRepository(Publisher::class)
+            $publisher = $this->publisherRepository
                 ->findOneBy(['name' => $publisherName]);
     
             if (!$publisher) {
@@ -127,8 +130,7 @@ class BookController extends AbstractController
                 $authorLastName = $authorData->getLastName();
     
                 // Check if the author exists
-                $author = $this->entityManager
-                    ->getRepository(Author::class)
+                $author = $this->authorRepository
                     ->findOneBy(['firstName' => $authorFirstName, 'lastName' => $authorLastName]);
     
                 if (!$author) {
@@ -136,17 +138,16 @@ class BookController extends AbstractController
                     $author = new Author();
                     $author->setFirstName($authorFirstName);
                     $author->setLastName($authorLastName);
+                    $this->entityManager->persist($author);
                 }
                 
                 // Associate book with author
-                $this->entityManager->persist($author);
                 $book->addAuthor($author);
             }
     
             $publisherName = $form->get('publisher')->get('name')->getData();
     
-            $publisher = $this->entityManager
-                ->getRepository(Publisher::class)
+            $publisher = $this->publisherRepository
                 ->findOneBy(['name' => $publisherName]);
     
             if (!$publisher) {
