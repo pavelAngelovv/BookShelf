@@ -1,5 +1,5 @@
 const initDatepicker = () => {
-  // Initialize datepicker with the specified format
+  // Initialize datepicker
   $('.js-datepicker').datepicker({
     format: 'yyyy-mm-dd'
   });
@@ -42,14 +42,14 @@ const initAuthorFields = () => {
 
   // Check if we are on edit page
   if (isEditPage) {
-    // If true edit page, populate existing author fields
+    // If true, populate existing author fields
     authors.forEach((author, index) => {
       addAuthorField(authorsContainer, index);
       document.getElementById(`book_authors_${index}_firstName`).value = author.firstName;
       document.getElementById(`book_authors_${index}_lastName`).value = author.lastName;
     });
   } else {
-    // If it's false, add the first author field
+    // If false, add the first author field
     addAuthorField(authorsContainer, 0);
   }
 
