@@ -22,10 +22,7 @@
             <td>{{ author.firstName }}</td>
             <td>{{ author.lastName }}</td>
             <td>
-              {% for book in author.books %}
-                {{ book.title }}
-                {% if not loop.last %}, {% endif %}
-              {% endfor %}
+              {{ author.books|map(book => book.title)|join(', ') }}
             </td>
           </tr>
           {% else %}

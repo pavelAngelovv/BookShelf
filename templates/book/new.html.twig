@@ -10,14 +10,6 @@
 
 {% block javascripts %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-  <script>
-    $(document).ready(function() {
-        $('.js-datepicker').datepicker({
-            format: 'yyyy-mm-dd'
-        });
-    });
-    $('.input-group-text').on('click', function() {
-        $(this).closest('.input-group').find('.js-datepicker').focus();
-    });
-  </script>
+  <script src="{{ asset('js/book-form.js') }}"></script>
+  <script>const isEditPage = false;</script>
 {% endblock %}

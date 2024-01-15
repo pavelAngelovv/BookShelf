@@ -26,11 +26,8 @@
               <tr>
                 <th scope="row">Books</th>
                 <td>
-                  {% for book in author.books %}
-                    {{ book.title }}
-                    {% if not loop.last %}, {% endif %}
-                  {% endfor %}
-                </td>
+                  {{ author.books|map(book => book.title)|join(', ') }}
+                </td>                
               </tr>
             </tbody>
           </table>
