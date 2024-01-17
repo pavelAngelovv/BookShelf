@@ -41,8 +41,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const basePath = link.getAttribute('href').split('/').filter(Boolean)[0];
     const isMatch = currentPath.includes(basePath);
     
-    console.log(currentPath);
-    console.log(basePath);
     if (currentPath.includes('new')) {
       document.getElementById('book').classList.remove('active')
     } else {
