@@ -8,24 +8,26 @@
     <div class="row justify-content-center">
       <div class="col-12 mb-5 w-75">
         <div class="table-responsive">
-          <h1 class="mb-5">User</h1>
+          <h1 class="table-title">User</h1>
           <table class="table table-dark table-bordered mb-0">
             <tbody>
-              <tr scope="row">
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-              </tr>
               <tr scope="row">
                 <th>Username</th>
                 <td>{{ user.username }}</td>
               </tr>
               <tr scope="row">
                 <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <td>
+                  {{ 'ROLE_ADMIN' in user.roles ? 'Admin' : 'User' }}
+                </td>
               </tr>
               <tr>
                 <th>Email</th>
                 <td>{{ user.email }}</td>
+              </tr>
+              <tr>
+                <th>Verified</th>
+                <td>{{ user.isVerified == 1 ? 'Yes' : 'No' }}</td>
               </tr>
             </tbody>
           </table>
