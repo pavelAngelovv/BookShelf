@@ -8,7 +8,7 @@ use App\Repository\PublisherRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,14 +19,12 @@ class PublisherController extends AbstractController
         private EntityManagerInterface $entityManager,
         private PaginatorInterface $paginator,
         private PublisherRepository $publisherRepository,
-        protected RequestStack $requestStack
     ) {
     }
 
     #[Route('/', name: 'app_publisher_index', methods: ['GET'])]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $request = $this->requestStack->getCurrentRequest();
         $query = $this->publisherRepository->createFindAllQuery();
     
         $pagination = $this->paginator->paginate(
@@ -46,9 +44,8 @@ class PublisherController extends AbstractController
     }
 
     #[Route('/new', name: 'app_publisher_new', methods: ['GET', 'POST'])]
-    public function new(): Response
+    public function new(Request $request): Response
     {
-        $request = $this->requestStack->getCurrentRequest();
         $publisher = new Publisher();
         $form = $this->createForm(PublisherType::class, $publisher);
         $form->handleRequest($request);
@@ -75,9 +72,8 @@ class PublisherController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_publisher_edit', methods: ['GET', 'POST'])]
-    public function edit(Publisher $publisher): Response
+    public function edit(Request $request, Publisher $publisher): Response
     {
-        $request = $this->requestStack->getCurrentRequest();
         $form = $this->createForm(PublisherType::class, $publisher);
         $form->handleRequest($request);
 
@@ -94,10 +90,8 @@ class PublisherController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_publisher_delete', methods: ['POST'])]
-    public function delete(Publisher $publisher): Response
+    public function delete(Request $request, Publisher $publisher): Response
     {
-        $request = $this->requestStack->getCurrentRequest();
-
         if ($this->isCsrfTokenValid('delete'.$publisher->getId(), $request->request->get('_token'))) {
             $this->entityManager->remove($publisher);
             $this->entityManager->flush();

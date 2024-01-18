@@ -8,7 +8,7 @@ use App\Repository\AuthorRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,14 +19,12 @@ class AuthorController extends AbstractController
         private AuthorRepository $authorRepository,
         private EntityManagerInterface $entityManager,
         private PaginatorInterface $paginator,
-        protected RequestStack $requestStack
     ) {
     }
 
     #[Route('/', name: 'app_author_index', methods: ['GET'])]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $request = $this->requestStack->getCurrentRequest();
         $query = $this->authorRepository->createFindAllQuery();
     
         $pagination = $this->paginator->paginate(
@@ -46,9 +44,8 @@ class AuthorController extends AbstractController
     }
 
     #[Route('/new', name: 'app_author_new', methods: ['GET', 'POST'])]
-    public function new(): Response
+    public function new(Request $request): Response
     {
-        $request = $this->requestStack->getCurrentRequest();
         $author = new Author();
         $form = $this->createForm(AuthorType::class, $author);
         $form->handleRequest($request);
@@ -75,9 +72,8 @@ class AuthorController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_author_edit', methods: ['GET', 'POST'])]
-    public function edit(Author $author): Response
+    public function edit(Request $request, Author $author): Response
     {
-        $request = $this->requestStack->getCurrentRequest();
         $form = $this->createForm(AuthorType::class, $author);
         $form->handleRequest($request);
 
@@ -94,10 +90,8 @@ class AuthorController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_author_delete', methods: ['POST'])]
-    public function delete(Author $author): Response
+    public function delete(Request $request, Author $author): Response
     {
-        $request = $this->requestStack->getCurrentRequest();
-
         if ($this->isCsrfTokenValid('delete'.$author->getId(), $request->request->get('_token'))) {
             $this->entityManager->remove($author);
             $this->entityManager->flush();

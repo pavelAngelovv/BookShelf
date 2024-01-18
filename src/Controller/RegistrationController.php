@@ -9,7 +9,7 @@ use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -26,14 +26,12 @@ class RegistrationController extends AbstractController
         private EntityManagerInterface $entityManager,
         private UserAuthenticatorInterface $userAuthenticator,
         private UserPasswordHasherInterface $userPasswordHasher,
-        protected RequestStack $requestStack
     ) {
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(): Response
+    public function register(Request $request): Response
     {
-        $request = $this->requestStack->getCurrentRequest();
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -74,10 +72,8 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(TranslatorInterface $translator): Response
+    public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
     {
-        $request = $this->requestStack->getCurrentRequest();
-
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
