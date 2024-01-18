@@ -8,7 +8,7 @@ use App\Repository\AuthorRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,12 +19,14 @@ class AuthorController extends AbstractController
         private AuthorRepository $authorRepository,
         private EntityManagerInterface $entityManager,
         private PaginatorInterface $paginator,
+        protected RequestStack $requestStack
     ) {
     }
 
     #[Route('/', name: 'app_author_index', methods: ['GET'])]
-    public function index(Request $request): Response
+    public function index(): Response
     {
+        $request = $this->requestStack->getCurrentRequest();
         $query = $this->authorRepository->createFindAllQuery();
     
         $pagination = $this->paginator->paginate(
@@ -44,15 +46,16 @@ class AuthorController extends AbstractController
     }
 
     #[Route('/new', name: 'app_author_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(): Response
     {
+        $request = $this->requestStack->getCurrentRequest();
         $author = new Author();
         $form = $this->createForm(AuthorType::class, $author);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($author);
-            $entityManager->flush();
+            $this->entityManager->persist($author);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('app_author_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -72,13 +75,14 @@ class AuthorController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_author_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Author $author, EntityManagerInterface $entityManager): Response
+    public function edit(Author $author): Response
     {
+        $request = $this->requestStack->getCurrentRequest();
         $form = $this->createForm(AuthorType::class, $author);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('app_author_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -90,11 +94,13 @@ class AuthorController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_author_delete', methods: ['POST'])]
-    public function delete(Request $request, Author $author, EntityManagerInterface $entityManager): Response
+    public function delete(Author $author): Response
     {
+        $request = $this->requestStack->getCurrentRequest();
+
         if ($this->isCsrfTokenValid('delete'.$author->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($author);
-            $entityManager->flush();
+            $this->entityManager->remove($author);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('app_author_index', [], Response::HTTP_SEE_OTHER);

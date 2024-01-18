@@ -12,7 +12,7 @@ use App\Repository\PublisherRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,12 +25,14 @@ class BookController extends AbstractController
         private EntityManagerInterface $entityManager,
         private PaginatorInterface $paginator,
         private PublisherRepository $publisherRepository,
+        protected RequestStack $requestStack
     ) {
     }
 
     #[Route('/', name: 'app_book_index', methods: ['GET'])]
-    public function index(Request $request): Response
+    public function index(): Response
     {
+        $request = $this->requestStack->getCurrentRequest();
         $query = $this->bookRepository->createFindAllQuery();
 
         $pagination = $this->paginator->paginate(
@@ -50,8 +52,9 @@ class BookController extends AbstractController
     }
 
     #[Route('/new', name: 'app_book_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
+    public function new(): Response
     {
+        $request = $this->requestStack->getCurrentRequest();
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
@@ -117,8 +120,9 @@ class BookController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_book_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Book $book): Response
+    public function edit(Book $book): Response
     {
+        $request = $this->requestStack->getCurrentRequest();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
@@ -181,8 +185,9 @@ class BookController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_book_delete', methods: ['POST'])]
-    public function delete(Request $request, Book $book): Response
+    public function delete(Book $book): Response
     {
+        $request = $this->requestStack->getCurrentRequest();
         if ($this->isCsrfTokenValid('delete'.$book->getId(), $request->request->get('_token'))) {
             $this->entityManager->remove($book);
             $this->entityManager->flush();

@@ -42,8 +42,6 @@ class AppSecurityAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
-    use TargetPathTrait;
-
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         // Check if there's a target path stored in the session
