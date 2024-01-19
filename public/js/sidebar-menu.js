@@ -40,7 +40,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
   navLinks.forEach(link => {
     const basePath = link.getAttribute('href').split('/').filter(Boolean)[0];
     const isMatch = currentPath.includes(basePath);
-  
+    
+    if (currentPath.includes('new')) {
+      document.getElementById('book').classList.remove('active')
+    } else {
+      document.getElementById('new').classList.remove('active')
+    }
     if (isMatch) {
       link.classList.add('active');
     }

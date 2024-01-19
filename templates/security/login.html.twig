@@ -1,0 +1,34 @@
+{% extends 'base_authentication.html.twig' %}
+
+{% block title %}Log in{% endblock %}
+
+{% block body %}
+<div class="container-md p-1 bg-dark mx-auto form-container">
+<form method="post" class="p-4">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+    <h1 class="h3 m-3 font-weight-normal text-white">Please sign in</h1>
+    <label for="inputUsername">Username</label>
+    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
+    <label for="inputPassword">Password</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+    <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+    >
+    <div class="d-flex justify-content-between">
+        <a href="{{ path('app_book_index') }}" class="btn btn-secondary mt-3">← Back</a>
+        <div class="cta-text">Don't have an account? Click <a href="{{ path('app_register') }}">here</a> to sign up.</div>
+        <button class="btn btn-primary mt-3" type="submit">Sign in</button>
+    </div>
+</form>
+</div>
+{% endblock %}

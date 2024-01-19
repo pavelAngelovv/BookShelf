@@ -44,15 +44,15 @@ class AuthorController extends AbstractController
     }
 
     #[Route('/new', name: 'app_author_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request): Response
     {
         $author = new Author();
         $form = $this->createForm(AuthorType::class, $author);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($author);
-            $entityManager->flush();
+            $this->entityManager->persist($author);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('app_author_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -72,13 +72,13 @@ class AuthorController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_author_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Author $author, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Author $author): Response
     {
         $form = $this->createForm(AuthorType::class, $author);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('app_author_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -90,11 +90,11 @@ class AuthorController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_author_delete', methods: ['POST'])]
-    public function delete(Request $request, Author $author, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Author $author): Response
     {
         if ($this->isCsrfTokenValid('delete'.$author->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($author);
-            $entityManager->flush();
+            $this->entityManager->remove($author);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('app_author_index', [], Response::HTTP_SEE_OTHER);

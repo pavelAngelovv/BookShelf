@@ -11,31 +11,44 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     {% block stylesheets %}{% endblock %}
   </head>
-  <body class="gradient-custom-2" id="body-pd">
+  <body id="body-pd"> 
     <header class="header" id="header">
       <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-      <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div>
+      <div>
+        {% if app.user %}
+          <p class="text-white">Welcome {{ app.user.username }}</p>
+        {% else %}
+          <a class="btn btn-secondary m-2" href="{{ path('app_login') }}">Log in</a>
+          <a class="btn btn-secondary" href="{{ path('app_register') }}">Register</a>
+        {% endif %}
+      </div>
     </header>
     <div class="l-navbar" id="nav-bar">
       <nav class="nav">
         <div>
           <div class="nav_list">
-            <a href="/book" class="nav_link" id="book">
+            <a href="{{ path('app_book_index') }}" class="nav_link" id="book">
               <img class="bx nav_image" src="{{ asset('/images/4ae8169f-74ff-4257-9eba-6b5a8ab3a4b5.png') }}"/><span class="nav_name">Books</span>
             </a>
-            <a href="/author" class="nav_link" id="author">
+            <a href="{{ path('app_author_index') }}" class="nav_link" id="author">
               <img class="bx nav_image" src="{{ asset('/images/f42f6dcf-25be-4633-b8fc-c736ef5e0d66.png') }}"/><span class="nav_name">Authors</span>
             </a>
-            <a href="/publisher" class="nav_link" id="publisher">
+            <a href="{{ path('app_publisher_index') }}" class="nav_link" id="publisher">
               <img class="bx nav_image" src="{{ asset('/images/62acdad8-a231-4e86-9558-5b1b819f12cc.png') }}"/><span class="nav_name">Publishers</span>
             </a>
-            <a href="/user" class="nav_link" id="user">
+            <a href="{{ path('app_user_index') }}" class="nav_link" id="user">
               <img class="bx nav_image" src="{{ asset('/images/d2b1fd21-6d82-4b7e-ad53-01d259a393a7.png') }}"/><span class="nav_name">Users</span>
             </a>
+            {% if app.user %}
+            <a href="{{ path('app_book_new') }}" class="nav_link" id="new">
+              <img class="bx nav_image" src="{{ asset('/images/655024a6-f7ba-4a8e-abb0-257b6c4db479.png') }}"/><span class="nav_name">Add a book</span>
+            </a>
+            {% endif %}
+
           </div>
         </div>
-        <a href="#" class="nav_link">
-          <i class='bx bx-log-out nav_icon'></i><span class="nav_name">SignOut</span>
+        <a href="/logout" class="nav_link">
+          <i class='bx bx-log-out nav_icon'></i><span class="nav_name">Sign Out</span>
         </a>
       </nav>
     </div>

@@ -44,15 +44,15 @@ class PublisherController extends AbstractController
     }
 
     #[Route('/new', name: 'app_publisher_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request): Response
     {
         $publisher = new Publisher();
         $form = $this->createForm(PublisherType::class, $publisher);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($publisher);
-            $entityManager->flush();
+            $this->entityManager->persist($publisher);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('app_publisher_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -72,13 +72,13 @@ class PublisherController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_publisher_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Publisher $publisher, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Publisher $publisher): Response
     {
         $form = $this->createForm(PublisherType::class, $publisher);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('app_publisher_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -90,11 +90,11 @@ class PublisherController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_publisher_delete', methods: ['POST'])]
-    public function delete(Request $request, Publisher $publisher, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Publisher $publisher): Response
     {
         if ($this->isCsrfTokenValid('delete'.$publisher->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($publisher);
-            $entityManager->flush();
+            $this->entityManager->remove($publisher);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('app_publisher_index', [], Response::HTTP_SEE_OTHER);
