@@ -18,8 +18,15 @@
         {% if app.user %}
           <p class="text-white">Welcome {{ app.user.username }}</p>
         {% else %}
-          <a class="btn btn-secondary m-2" href="{{ path('app_login') }}">Log in</a>
-          <a class="btn btn-secondary" href="{{ path('app_register') }}">Register</a>
+          <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle mt-3" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Options
+            </button>
+            <div class="dropdown-menu p-1" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="{{ path('app_login') }}">Log in</a>
+              <a class="dropdown-item" href="{{ path('app_register') }}">Register</a>
+            </div>
+          </div>
         {% endif %}
       </div>
     </header>
@@ -36,15 +43,16 @@
             <a href="{{ path('app_publisher_index') }}" class="nav_link" id="publisher">
               <img class="bx nav_image" src="{{ asset('/images/62acdad8-a231-4e86-9558-5b1b819f12cc.png') }}"/><span class="nav_name">Publishers</span>
             </a>
-            <a href="{{ path('app_user_index') }}" class="nav_link" id="user">
-              <img class="bx nav_image" src="{{ asset('/images/d2b1fd21-6d82-4b7e-ad53-01d259a393a7.png') }}"/><span class="nav_name">Users</span>
-            </a>
-            {% if app.user %}
-            <a href="{{ path('app_book_new') }}" class="nav_link" id="new">
-              <img class="bx nav_image" src="{{ asset('/images/655024a6-f7ba-4a8e-abb0-257b6c4db479.png') }}"/><span class="nav_name">Add a book</span>
-            </a>
+            {% if is_granted('ROLE_ADMIN') %}
+              <a href="{{ path('app_user_index') }}" class="nav_link" id="user">
+                <img class="bx nav_image" src="{{ asset('/images/d2b1fd21-6d82-4b7e-ad53-01d259a393a7.png') }}"/><span class="nav_name">Users</span>
+              </a>
             {% endif %}
-
+            {% if app.user %}
+              <a href="{{ path('app_book_new') }}" class="nav_link" id="new">
+                <img class="bx nav_image" src="{{ asset('/images/655024a6-f7ba-4a8e-abb0-257b6c4db479.png') }}"/><span class="nav_name">Add a book</span>
+              </a>
+            {% endif %}
           </div>
         </div>
         <a href="/logout" class="nav_link">
@@ -53,11 +61,8 @@
       </nav>
     </div>
     {% block body %}{% endblock %}
-
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js" integrity="sha384-Ke5U6OgHtpJKsVO9uTnOSt5PyLZn9I2QD+9jD9GRZpCVnSI6IqJJKTXiU8VtN7G1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="{{ asset('js/sidebar-menu.js') }}"></script>
     {% block javascripts %}{% endblock %}
   </body>

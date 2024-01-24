@@ -53,6 +53,11 @@ const initAuthorFields = () => {
     addAuthorField(authorsContainer, 0);
   }
 
+  // Disable the "Remove Author" button if there's only one field left
+  if (authorsContainer.childElementCount > 2) {
+    removeAuthorButton.disabled = false;
+  }
+
   // Add event listener to the "Add Author" button
   const addAuthorButton = document.getElementById('add-author');
   if (addAuthorButton) {

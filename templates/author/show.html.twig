@@ -35,8 +35,9 @@
         <div class="d-flex justify-content-between">
           <a href="{{ path('app_author_index') }}" class="btn btn-secondary mt-3">← Back to List</a>
           <div class="d-flex">
-            <a href="{{ path('app_author_edit', {'id': author.id}) }}" class="btn btn-warning mt-3 mx-2">Edit</a>
+            {% if is_granted('ROLE_ADMIN') %}
             <a href="{{ path('app_author_index') }}" class="btn btn-danger mt-3 p-0">{{ include('author/_delete_form.html.twig') }}</a>
+            {% endif %}
           </div>
         </div>
       </div>

@@ -1,0 +1,16 @@
+{# templates/registration/verification_awaiting.html.twig #}
+
+{% extends 'base_authentication.html.twig' %}
+
+{% block title %}Email Verification Awaiting{% endblock %}
+
+{% block body %}
+  <div class="text-center">
+    <h1>Email Verification Awaiting</h1>
+    <p style="color:#ffff;">
+        Thank you for registering! An email has been sent to your email address.
+        Please check your email and follow the instructions to activate your account.
+    </p>
+    <a href="{{ path('app_book_index') }}" class="btn btn-secondary mt-3">← Back to browse</a>
+  </div>
+{% endblock %}

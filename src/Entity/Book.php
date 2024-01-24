@@ -56,6 +56,10 @@ class Book
     #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'books')]
     private ?Publisher $publisher = null;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'books', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function getId(): ?UuidInterface
     {
         return $this->id;
@@ -141,6 +145,18 @@ class Book
     public function removeAuthor(Author $author): static
     {
         $this->authors->removeElement($author);
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $bookUser): static
+    {
+        $this->user = $bookUser;
 
         return $this;
     }
