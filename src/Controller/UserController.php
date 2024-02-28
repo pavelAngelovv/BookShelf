@@ -74,6 +74,10 @@ class UserController extends AbstractController
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user): Response
     {
+        if ($user !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -98,5 +102,25 @@ class UserController extends AbstractController
         }
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/change-role', name: 'app_change_user_role', methods: ['POST'])]
+    public function changeUserRole(Request $request, $id): Response
+    {
+        $user = $this->entityManager->getRepository(User::class)->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException('User not found');
+        }
+
+        if ($request->isMethod('POST')) {
+            $newRole = $request->request->get('newRole');
+
+            $user->setRoles([$newRole]);
+
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('app_user_show', ['id' => $user->getId()]);
+        }
     }
 }

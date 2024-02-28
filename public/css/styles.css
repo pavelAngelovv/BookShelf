@@ -21,10 +21,9 @@ body {
   position: relative;
   margin: var(--header-height) 0 0 0;
   padding: 0 1rem;
-  font-family: var(--body-font);
   font-size: var(--normal-font-size);
   transition: .5s;
-  background-image: url('/images/54b12678-2031-4225-a960-9f958d78ad96.jpg');
+  background-image: url('/images/dd7acb8f-424b-40ec-9458-dea4645f026e.jpg');
   background-size: cover;
 }
 
@@ -283,4 +282,33 @@ label.form-check-label.genres {
   text-align: center;
   margin-top: 30px;
   color: #ffff;
+}
+
+a.page-link {
+  background-color: var(--first-color);
+}
+.page-item:last-child .page-link {
+  background-color: var(--first-color);
+}
+
+.page-item:first-child .page-link {
+  background-color: var(--first-color);
+}
+
+.disabled>.page-link, .page-link.disabled {
+  color: #b3b3b3;
+}
+
+.edit-button {
+  width: 74px;
+}
+
+.edit-button:hover {
+  transition: 250ms;
+  background-color: #c79605;
+  color: #fff;
+}
+
+select#newRole {
+width: 170px
 }
